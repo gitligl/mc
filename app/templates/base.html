@@ -1,0 +1,14 @@
+<html>
+  <head>
+    {% if title %}
+    <title>{{title}} - liglblog</title>
+    {% else %}
+    <title>ligl博客首页</title>
+    {% endif %}
+  </head>
+  <body>
+  liglblog: <a href="/index">首页</a>
+  <hr>
+    {% block content %}{% endblock %}
+  </body>
+</html>
