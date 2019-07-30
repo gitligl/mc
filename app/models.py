@@ -35,3 +35,8 @@ class Post(db.Model):
 
     def __repr__(self):
         return '<Post %r>' % self.body
+
+
+# models.py模块可以单独来执行，但是必须要有下面这段否则更新表结构后，无法建立迁移文件
+if __name__ == "__main__":
+    manage.run()
