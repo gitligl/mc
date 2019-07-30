@@ -4,7 +4,6 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate, MigrateCommand
 from flask_script import Manager
 
-
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://root:guilin@localhost:3306/test?charset=utf8"
 app.config['SQLALCHEMY_COMMIT_TEARDOWN'] = True
