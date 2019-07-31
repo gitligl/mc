@@ -7,7 +7,12 @@
     {% endif %}
   </head>
   <body>
-  liglblog: <a href="/index">首页</a>
+  <div>liglblog:
+   <a href="/index">首页</a>
+  {% if g.user.is_authenticated %}
+  | <a href="logout">Logout</a>
+  {% endif %}
+  </div>
   <hr>
     {% block content %}{% endblock %}
   </body>

@@ -1,8 +1,10 @@
-from flask import Flask
-# from flask_login._compat import unicode
-from flask_sqlalchemy import SQLAlchemy
+# from app import app, db
 from flask_migrate import Migrate, MigrateCommand
 from flask_script import Manager
+# from flask_login._compat import unicode
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://root:guilin@localhost:3306/test?charset=utf8"
@@ -17,13 +19,28 @@ manage.add_command('db', MigrateCommand)
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(64), index=True, unique=True)
+    nickname = db.Column(db.String(64), index=True, unique=True)
     email = db.Column(db.String(120), index=True, unique=True)
-    password = db.Column(db.String(120), index=True, unique=True)
+    # password = db.Column(db.String(120), index=True, unique=True)
     posts = db.relationship('Post', backref='author', lazy='dynamic')
 
+    @property
+    def is_authenticated(self):
+        return True
+
+    @property
+    def is_active(self):
+        return True
+
+    @property
+    def is_anonymous(self):
+        return False
+
+    def get_id(self):
+        return str(self.id)
+
     def __repr__(self):
-        return '<User %r>' % self.username
+        return '<User %r>' % self.nickname
 
 
 class Post(db.Model):
