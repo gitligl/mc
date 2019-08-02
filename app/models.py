@@ -1,17 +1,20 @@
-# from app import app, db
+from app import app, db
 from flask_migrate import Migrate, MigrateCommand
 from flask_script import Manager
-# from flask_login._compat import unicode
-from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
 
 
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://root:guilin@localhost:3306/test?charset=utf8"
-app.config['SQLALCHEMY_COMMIT_TEARDOWN'] = True
-app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
-db = SQLAlchemy(app)
+if __name__ == "__main__":
+    db.metadata.clear()
+# 下面几行取消注释后，可单独迁移数据库配置，但是无法去整个项目进行交互
+# from flask import Flask
+# from flask_sqlalchemy import SQLAlchemy
+# app = Flask(__name__)
+# app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://root:guilin@localhost:3306/test?charset=utf8"
+# app.config['SQLALCHEMY_COMMIT_TEARDOWN'] = True
+# app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
+# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
+# db = SQLAlchemy(app)
+# db.init_app(app)
 manage = Manager(app)
 migrate = Migrate(app, db)
 manage.add_command('db', MigrateCommand)
@@ -19,9 +22,9 @@ manage.add_command('db', MigrateCommand)
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    nickname = db.Column(db.String(64), index=True, unique=True)
+    username = db.Column(db.String(64), index=True, unique=True)
     email = db.Column(db.String(120), index=True, unique=True)
-    # password = db.Column(db.String(120), index=True, unique=True)
+    password = db.Column(db.String(120), index=True, unique=True)
     posts = db.relationship('Post', backref='author', lazy='dynamic')
 
     @property
@@ -40,7 +43,7 @@ class User(db.Model):
         return str(self.id)
 
     def __repr__(self):
-        return '<User %r>' % self.nickname
+        return '<User %r>' % self.username
 
 
 class Post(db.Model):
@@ -51,6 +54,15 @@ class Post(db.Model):
 
     def __repr__(self):
         return '<Post %r>' % self.body
+
+
+class SysUser(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(80), index=True, unique=True, nullable=False)
+    sysname = db.Column(db.String(200), index=True, unique=True, nullable=False)
+
+    def __repr__(self):
+        return '<SysUser %r>' % self.name
 
 
 # models.py模块可以单独来执行，但是必须要有下面这段否则更新表结构后，无法建立迁移文件
