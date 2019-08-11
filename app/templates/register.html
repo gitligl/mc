@@ -1,10 +1,19 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Register</title>
+  <title>Please Sign In</title>
 </head>
 <body>
-    <p>这里是Register</p>
+  {% if message %}
+  <p style="color:red">{{ message }}</p>
+  {% endif %}
+  <form action="/register" method="post">
+    <legend>Please sign up:</legend>
+    <p><input name="username" placeholder="Input Your Username"></p>
+    <p><input name="password" placeholder="Input Your Password" type="password"></p>
+      <p><input name="confirm" placeholder="Confirm Your Password" type="password"></p>
+      <p><input name="email" placeholder="Input Your Email-Address"></p>
+      <p><button type="submit">Submit</button></p>
+  </form>
 </body>
 </html>
