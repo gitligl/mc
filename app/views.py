@@ -12,7 +12,7 @@ def home():
 
 @app.route('/login', methods=['GET'])
 def login_form():
-    return render_template('form.html')
+    return render_template('login.html')
 
 
 @app.route('/register', methods=['GET'])
@@ -29,7 +29,7 @@ def login():
     if db.session.query(User).filter_by(username=username).all():
         if md5_password.hexdigest() == db.session.query(User).filter_by(username=username).all()[0].password:
             return render_template('login_ok.html', username=username)
-    return render_template('form.html', message='Bad username or password', username=username)
+    return render_template('login.html', message='Bad username or password', username=username)
 
 
 @app.route('/register', methods=['POST'])
@@ -45,7 +45,7 @@ def register():
     user = User(username=username, email=email, password=md5_password.hexdigest())
     db.session.add(user)
     db.session.commit()
-    return render_template('form.html')
+    return render_template('login.html')
 
 
 mc = Minio('106.15.236.58:19000',
